@@ -1,0 +1,91 @@
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.main > div {
+    padding: 10px;
+}
+
+.header {
+    height: 50px;
+    display: grid;
+    padding: 10px;
+    grid-column: 1 / 3;
+    align-items: center;
+    justify-content: center;
+    background-color: gray;
+}
+
+.left {
+    height: 100vh;
+    text-align: center;
+}
+
+.groups {
+    display: grid;
+    grid-auto-rows: 45px;
+}
+
+.groups > div {
+    padding: 10px;
+}
+
+.groups > div:hover {
+    background-color: grey;
+}
+
+.group {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right {
+    height: 100vh;
+    border-left: 2px solid black;
+}
+
+.right_header {
+    gap: 10px;
+    height: 50px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
+
+.group_name {
+    font-size: 35px;
+}
+
+.icon {
+    border: none;
+    width: 10px;
+    height: 10px;
+}
+
+.task {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task > div {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.right-info {
+    font-size: smaller;
+}
+
+.tasks {
+    margin-bottom: 10px;
+}
