@@ -5,6 +5,40 @@
     </head>
     
     <body>
+        <dialog class="group-dialog">
+            <form>
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="title" required>
+                <button class="add">Add</button>
+                <button class="cancel" type="button">Cancel</button>
+            </form>
+        </dialog>
+
+        <dialog class="task-dialog">
+            <form>
+                <label for="name">Name: </label>
+                <input type="text" name="name" id="name" required>
+
+                <label for="due">Due: </label>
+                <input type="text" name="due" id="due" required>
+
+                <label for="priority">Priority: </label>
+                <select name="priority" id="priority">
+                    <option selected disabled>-</option>
+                    <option value="low">Low</option>
+                    <option value="mid">Mid</option>
+                    <option value="high">High</option>
+                </select>
+
+                <label for="note">Notes: </label>
+                <input type="text" name="note" id="note">
+
+                <button class="add" data-index="0">Add</button>
+                <button class="cancel" type="button">Cancel</button>
+            </form>
+        </dialog>
+
+
         <div class="container">
             <div class="header">
                 <div>TODO</div>
@@ -15,14 +49,14 @@
                     <div>Groups:</div>
 
                     <div class="groups">
-                        <div class="group" id="default">
+                        <div class="group" id="default" data-index="0">
                             <div>Home</div>
                             <input type="image" class="delete-group" src="./icons/delete-outline.svg">
                         </div>
                     </div>
 
-                    <div class="add-button">
-                        <button>Add Group</button>
+                    <div class="add-group-div">
+                        <button class="add-group">Add Group</button>
                     </div>
                 </div>
 
@@ -91,8 +125,8 @@
                         </div>
                     </div>
 
-                    <div class="add-button">
-                        <button>Add Task</button>
+                    <div class="add-task-div">
+                        <button class="add-task">Add Task</button>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,10 @@ class Group {
     updateTitle(newTitle) {
         this.title = newTitle;
     }
+
+    get() {
+        return this.title;
+    }
 }
 
 export { Group };

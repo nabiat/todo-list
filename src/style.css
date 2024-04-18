@@ -90,12 +90,12 @@ body {
     margin-bottom: 5px;
 }
 
-.add-button {
-    padding: 10px;
+.add-task-div, .add-group-div {
+    padding-top: 10px;
 }
 
-input {
-    /* border: none; */
+.add-task {
+    padding-left: 10px;
 }
 
 .task-name {
