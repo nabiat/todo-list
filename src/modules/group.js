@@ -16,8 +16,12 @@ class Group {
         this.title = newTitle;
     }
 
-    get() {
+    get groupTitle() {
         return this.title;
+    }
+
+    get groupTasks() {
+        return this.tasks;
     }
 }
 

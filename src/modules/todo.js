@@ -1,7 +1,7 @@
 class ToDo {
-    constructor(title, notes, due, priority, status) {
+    constructor(title, note, due, priority, status) {
         this.due = due;
-        this.note = notes;
+        this.note = note;
         this.title = title;
         this.status = status;
         this.priority = priority;
@@ -25,6 +25,18 @@ class ToDo {
 
     updatePriority(newPriority) {
         this.priority = newPriority;
+    }
+
+    get taskTitle() {
+        return this.title;
+    }
+
+    get taskNote() {
+        return this.note;
+    }
+
+    get taskDue() {
+        return this.due;
     }
 }
 

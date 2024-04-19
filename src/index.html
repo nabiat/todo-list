@@ -33,7 +33,7 @@
                 <label for="note">Notes: </label>
                 <input type="text" name="note" id="note">
 
-                <button class="add" data-index="0">Add</button>
+                <button class="add">Add</button>
                 <button class="cancel" type="button">Cancel</button>
             </form>
         </dialog>
@@ -49,84 +49,14 @@
                     <div>Groups:</div>
 
                     <div class="groups">
-                        <div class="group" id="default" data-index="0">
-                            <div>Home</div>
+                        <button class="group" type="button" data-index="0">
+                            <div class="group-name">Home</div>
                             <input type="image" class="delete-group" src="./icons/delete-outline.svg">
-                        </div>
+                        </button>
                     </div>
 
                     <div class="add-group-div">
                         <button class="add-group">Add Group</button>
-                    </div>
-                </div>
-
-                <div class="right" id="default">
-                    <div class="right_header">
-                        <div class="group_name">Home</div>
-                        <input type="image" class="edit-title" src="./icons/pencil-outline.svg">
-                    </div>
-
-                    <div class="tasks">
-                        <form class="task">
-                            <div class="left-info">
-                                <input type="checkbox">
-                                <input type="text" class="task-name" value="Vacuum" disabled="disabled">
-                                <input type="image" class="note" src="./icons/arrow-down.svg">
-                            </div>
-
-                            <div class="right-info">
-                                <input type="text" class="task-due" value="2024-04-13" disabled="disabled">
-                                <input type="image" class="edit" src="./icons/pencil-outline.svg">
-                                <input type="image" class="delete" src="./icons/delete-outline.svg">
-                            </div>
-                        </form>
-
-                        <div class="task">
-                            <div class="left-info">
-                                <input type="checkbox">
-                                <input type="text" class="task-name" value="Laundry" disabled="disabled">
-                                <input type="image" class="note" src="./icons/arrow-down.svg">
-                            </div>
-
-                            <div class="right-info">
-                                <input type="text" class="task-due" value="2024-04-13" disabled="disabled">
-                                <input type="image" class="edit" src="./icons/pencil-outline.svg">
-                                <input type="image" class="delete" src="./icons/delete-outline.svg">
-                            </div>
-                        </div>
-
-                        <div class="task">
-                            <div class="left-info">
-                                <input type="checkbox">
-                                <input type="text" class="task-name" value="Organize" disabled="disabled">
-                                <input type="image" class="note" src="./icons/arrow-down.svg">
-                            </div>
-
-                            <div class="right-info">
-                                <input type="text" class="task-due" value="2024-04-13" disabled="disabled">
-                                <input type="image" class="edit" src="./icons/pencil-outline.svg">
-                                <input type="image" class="delete" src="./icons/delete-outline.svg">
-                            </div>
-                        </div>
-
-                        <div class="task">
-                            <div class="left-info">
-                                <input type="checkbox">
-                                
-                                <input type="text" class="task-name" value="Clean bathrooms" disabled="disabled">
-                                <input type="image" class="note" src="./icons/arrow-down.svg">
-                            </div>
-
-                            <div class="right-info">
-                                <input type="text" class="task-due" value="2024-04-13" disabled="disabled">
-                                <input type="image" class="edit" src="./icons/pencil-outline.svg">
-                                <input type="image" class="delete" src="./icons/delete-outline.svg">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="add-task-div">
-                        <button class="add-task">Add Task</button>
                     </div>
                 </div>
             </div>
