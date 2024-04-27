@@ -1,7 +1,7 @@
 import '../style.css';
 import { ToDo } from './todo';
 import { groupsArr } from './default-group';
-import { title, dueDate, noteIcon, editIcon, deleteIcon } from './icon-functionality';
+import { title, dueDate, noteIcon, editIcon, priority, deleteIcon } from './icon-functionality';
 
 function createTask(task, groupIndex, taskIndex) {
     let newTask = document.createElement('form');
@@ -19,7 +19,7 @@ function createTask(task, groupIndex, taskIndex) {
     let checkBox = document.createElement('input');
     checkBox.type = 'checkbox';
 
-    leftSide.append(checkBox, title(task.taskTitle), noteIcon());
+    leftSide.append(checkBox, title(task.taskTitle), noteIcon(), priority(newTask, task.taskPriority));
 
     let rightSide = document.createElement('div');
     rightSide.className = 'right-info';
@@ -33,6 +33,20 @@ function createTask(task, groupIndex, taskIndex) {
     toShowNote.className = 'note-div';
 
     newTask.append(nonNote, toShowNote);
+
+    checkBox.addEventListener('click', () => {
+        let currTask = checkBox.parentNode.parentNode.parentNode;
+        let groupIdx = currTask.dataset.gIndex;
+        let taskIdx = currTask.dataset.tIndex;
+
+        if (checkBox.checked) {
+            groupsArr[groupIdx].groupTasks[taskIdx].updateStatus(true);
+            currTask.style.backgroundColor = 'grey';
+        } else {
+            groupsArr[groupIdx].groupTasks[taskIdx].updateStatus(false);
+            currTask.style.backgroundColor = 'transparent';
+        }
+    });
     
     return newTask;
 }
@@ -44,7 +58,7 @@ function addTaskBtn(groupIndex) {
     taskBtn.className = 'add-task';
 
     taskBtn.addEventListener('click', () => {
-        document.querySelector('form').reset();
+        document.querySelector('.task-dialog form').reset();
 
         let addTaskDialog = document.querySelector('.task-dialog');
         let addBtnInDialog = addTaskDialog.querySelector('.add');
@@ -70,10 +84,13 @@ addTaskEntry.addEventListener('click', (e) => {
     document.querySelector('.tasks').append(createTask(newTask, addTaskEntry.dataset.gIndex,
         groupsArr[addTaskEntry.dataset.gIndex].groupTasks.length - 1));
 
-    
     document.querySelector('.task-dialog').close();
 });
 
-// TODO: cancel task btn
+let cancelTaskEntry = document.querySelector('.task-dialog .cancel');
+cancelTaskEntry.addEventListener('click', () => {
+    let taskDialog = document.querySelector('.task-dialog');
+    taskDialog.close();
+});
 
 export { createTask, addTaskBtn }; 

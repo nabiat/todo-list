@@ -116,7 +116,7 @@ body {
     font-size: smaller;
 }
 
-input:disabled, textarea:disabled {
+input:disabled, textarea:disabled, select:disabled {
     color: black;
     background-color: transparent;
 }

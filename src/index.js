@@ -1,16 +1,6 @@
 import './style.css';
 import { Group } from './modules/group';
-
 import { groupsArr } from './modules/default-group';
-
-
-
-// Add, Edit, Delete Tasks
-
-
-
-
-// Add, Edit, Delete Groups (add functinality to delete + edit buttons too ^)
 
 // Listeners to Add/Cancel New Group Entries
 let groupEntry = document.querySelector('.add-group');

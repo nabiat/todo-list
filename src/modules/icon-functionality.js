@@ -61,6 +61,51 @@ function noteIcon() {
     return note;
 }
 
+function priority(task, taskPriority) {
+    let priority = document.createElement('select');
+    priority.className = 'taskPriority';
+    priority.disabled = true;
+
+    let low = document.createElement('option');
+    low.textContent = 'Low';
+    low.value = 'low';
+
+    let mid = document.createElement('option');
+    mid.textContent = 'Mid';
+    mid.value = 'mid';
+
+    let high = document.createElement('option');
+    high.textContent = 'High';
+    high.value = 'high';
+
+    if (taskPriority === 'Low') {
+        low.selected = true;
+        task.style.border = '2px solid green';
+    } else if (taskPriority === 'Mid') {
+        mid.selected = true;
+        task.style.border = '2px solid yellow';
+    } else {
+        high.selected = true;
+        task.style.border = '2px solid red';
+    }
+
+    priority.append(low, mid, high);
+
+    priority.addEventListener('change', () => {
+        let form = priority.parentNode.parentNode.parentNode;
+        let selected = priority.options[priority.selectedIndex].value;
+        if (selected === 'low') {
+            form.style.border = '2px solid green';
+        } else if (selected === 'mid') {
+            form.style.border = '2px solid yellow';
+        } else {
+            form.style.border = '2px solid red';
+        }
+    });
+
+    return priority;
+}
+
 function editIcon(groupIndex, classCategory) {
     let edit = document.createElement('input');
     edit.src = './icons/pencil-outline.svg';
@@ -121,10 +166,14 @@ function editTask(editBtn) {
         currTask.querySelector('.task-due').disabled = true;
         currTask.querySelector('.task-name').disabled = true;
         currTask.querySelector('.display-note').disabled = true;
+        currTask.querySelector('.taskPriority').disabled = true;
 
         groupsArr[groupIndex].groupTasks[taskIndex].updateTitle(currTask.querySelector('.task-name').value);
         groupsArr[groupIndex].groupTasks[taskIndex].updateDue(currTask.querySelector('.task-due').value);
         groupsArr[groupIndex].groupTasks[taskIndex].updateNotes(currTask.querySelector('.display-note').value);
+
+        let dropdown = currTask.querySelector('.taskPriority');
+        groupsArr[groupIndex].groupTasks[taskIndex].updatePriority(dropdown.options[dropdown.selectedIndex].text);
 
         currTask.querySelector('.edit').src = './icons/pencil-outline.svg';
 
@@ -149,6 +198,7 @@ function editTask(editBtn) {
         currTask.querySelector('.task-due').disabled = false;
         currTask.querySelector('.task-name').disabled = false;
         currTask.querySelector('.display-note').disabled = false;
+        currTask.querySelector('.taskPriority').disabled = false;
     }
 }
 
@@ -171,4 +221,4 @@ function deleteTask(deleteBtn) {
     document.getElementById(`tindex-${currTaskIndex}`).remove();
 }
 
-export { title, dueDate, editIcon, noteIcon, deleteIcon };
+export { title, dueDate, editIcon, priority, noteIcon, deleteIcon };

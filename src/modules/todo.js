@@ -38,6 +38,10 @@ class ToDo {
     get taskDue() {
         return this.due;
     }
+
+    get taskPriority() {
+        return this.priority;
+    }
 }
 
 export { ToDo };

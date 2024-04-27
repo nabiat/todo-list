@@ -8,9 +8,9 @@ const groupsArr = [];
 
 let defaultG = new Group('Home');
 defaultG.addTask(new ToDo('Vacuum', 'hi', '2024-04-13', 'High', false));
-defaultG.addTask(new ToDo('Laundry', '', '2024-04-13', 'High', false));
+defaultG.addTask(new ToDo('Laundry', '', '2024-04-13', 'Low', false));
 defaultG.addTask(new ToDo('Organize', '', '2024-04-13', 'High', false));
-defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'High', false));
+defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'Mid', false));
 
 groupsArr.push(defaultG);
 
