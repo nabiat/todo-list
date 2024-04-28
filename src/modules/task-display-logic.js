@@ -1,7 +1,7 @@
 import '../style.css';
 import { ToDo } from './todo';
-import { groupsArr } from './default-group';
-import { title, dueDate, noteIcon, editIcon, priority, deleteIcon } from './icon-functionality';
+import { groupsArr } from './group-display-logic';
+import { title, dueDate, noteIcon, editIcon, priority, deleteIcon } from './input-functionality';
 
 function createTask(task, groupIndex, taskIndex) {
     let newTask = document.createElement('form');

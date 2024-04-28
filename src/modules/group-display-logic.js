@@ -1,8 +1,8 @@
 import '../style.css';
 import { ToDo } from "./todo";
 import { Group } from "./group";
-import { editIcon } from './icon-functionality';
-import { createTask, addTaskBtn } from './create-add-tasks';
+import { editIcon, deleteIcon } from './input-functionality';
+import { createTask, addTaskBtn } from './task-display-logic';
 
 const groupsArr = [];
 
@@ -14,15 +14,32 @@ defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'Mid', false));
 
 groupsArr.push(defaultG);
 
-let projects = document.querySelectorAll('.group');
-projects.forEach((proj) =>
-    proj.addEventListener('click', () => {
-        proj.style.background = 'gray';
-        displayDefaultTaskPage(proj.dataset.index);
-    })
-);
+function display(groupIndex) {
+    displayGroup(groupIndex, groupsArr[groupIndex].groupTitle);
+    displayTaskPage(groupIndex);
+}
 
-function displayDefaultTaskPage(groupIndex) {
+function displayGroup(groupIndex, groupTitle) {
+    let groups = document.querySelector('.groups');
+
+    let groupBtn = document.createElement('button');
+    groupBtn.id = 'gindex-' + groupIndex;
+    groupBtn.dataset.index = groupIndex;
+    groupBtn.className = 'group';
+    groupBtn.value = groupTitle;
+    groupBtn.type = 'button';
+    
+    let groupName = document.createElement('div');
+    groupName.className = 'group-name';
+    groupName.textContent = groupTitle;
+    
+    groupBtn.append(groupName, deleteIcon('delete-group'));
+    groups.append(groupBtn);
+
+    return groupBtn;
+}
+
+function displayTaskPage(groupIndex) {
     let group = groupsArr[groupIndex];
 
     let rightPage = document.createElement('div');
@@ -63,4 +80,4 @@ function displayDefaultTaskPage(groupIndex) {
     document.querySelector('.main').append(rightPage);
 }
 
-export { groupsArr };
+export { groupsArr, display, displayGroup };

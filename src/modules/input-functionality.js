@@ -1,5 +1,5 @@
 import '../style.css';
-import { groupsArr } from './default-group';
+import { groupsArr } from './group-display-logic';
 import upArrow from '../icons/arrow-up.svg';
 import checkMark from '../icons/check-outline.svg';
 
@@ -80,13 +80,13 @@ function priority(task, taskPriority) {
 
     if (taskPriority === 'Low') {
         low.selected = true;
-        task.style.border = '2px solid green';
+        // task.style.border = '2px solid green';
     } else if (taskPriority === 'Mid') {
         mid.selected = true;
-        task.style.border = '2px solid yellow';
+        // task.style.border = '2px solid yellow';
     } else {
         high.selected = true;
-        task.style.border = '2px solid red';
+        // task.style.border = '2px solid red';
     }
 
     priority.append(low, mid, high);
@@ -94,13 +94,13 @@ function priority(task, taskPriority) {
     priority.addEventListener('change', () => {
         let form = priority.parentNode.parentNode.parentNode;
         let selected = priority.options[priority.selectedIndex].value;
-        if (selected === 'low') {
-            form.style.border = '2px solid green';
-        } else if (selected === 'mid') {
-            form.style.border = '2px solid yellow';
-        } else {
-            form.style.border = '2px solid red';
-        }
+        // if (selected === 'low') {
+        //     form.style.border = '2px solid green';
+        // } else if (selected === 'mid') {
+        //     form.style.border = '2px solid yellow';
+        // } else {
+        //     form.style.border = '2px solid red';
+        // }
     });
 
     return priority;
@@ -116,45 +116,31 @@ function editIcon(groupIndex, classCategory) {
     edit.addEventListener('click', (e) => {
         e.preventDefault();
         if (edit.className === 'edit-title') {
-            let mainTitles = document.querySelectorAll('.group-name');
-            mainTitles.forEach((title) => {
-                title.textContent = 'new title';
-            });
-
-            // update in group obj too!!!!!
-
-            let pageHeader = edit.parentNode;
-            if (pageHeader.querySelector('.edit-title').src === checkMark) {
-                pageHeader.querySelector('.group-name').disabled = true;
-
-                let groupIndex = pageHeader.dataset.gIndex;
-                pageHeader.querySelector('.edit-title').src = './icons/pencil-outline.svg';
-                groupsArr[groupIndex].updateTitle(pageHeader.querySelector('.group-name').value);
-
-            } else {
-                pageHeader.querySelector('.group-name').disabled = false;
-                pageHeader.querySelector('.edit-title').src = checkMark;
-            }
-        } else editTask(edit);
+            editGroup(edit);
+        } else {
+            editTask(edit);
+        }
     });
     return edit;
 }
 
-function deleteIcon(classCategory) {
-    let dlt = document.createElement('input');
-    dlt.src = './icons/delete-outline.svg';
-    dlt.className = classCategory;
-    dlt.type = 'image';
+function editGroup(editBtn) {
+    let pageHeader = editBtn.parentNode;
+    if (pageHeader.querySelector('.edit-title').src === checkMark) {
+        pageHeader.querySelector('.group-name').disabled = true;
 
-    dlt.addEventListener('click', (e) => {
-        e.preventDefault();
+        let groupIndex = pageHeader.dataset.gIndex;
+        let newTitle = pageHeader.querySelector('.group-name').value;
 
-        if (dlt.className === 'delete-group') {
-            // document.getElementById(`gindex-${gIndex}`).remove();
-            return;
-        } else deleteTask(dlt);
-    });
-    return dlt;
+        groupsArr[groupIndex].updateTitle(newTitle);
+        pageHeader.querySelector('.edit-title').src = './icons/pencil-outline.svg';
+        
+        let group = document.getElementById(`gindex-${groupIndex}`);
+        group.querySelector('.group-name').textContent = newTitle;
+    } else {
+        pageHeader.querySelector('.group-name').disabled = false;
+        pageHeader.querySelector('.edit-title').src = checkMark;
+    }
 }
 
 function editTask(editBtn) {
@@ -163,10 +149,7 @@ function editTask(editBtn) {
         let taskIndex = currTask.dataset.tIndex;
         let groupIndex = currTask.dataset.gIndex;
         
-        currTask.querySelector('.task-due').disabled = true;
-        currTask.querySelector('.task-name').disabled = true;
-        currTask.querySelector('.display-note').disabled = true;
-        currTask.querySelector('.taskPriority').disabled = true;
+        disableInputs(currTask, true);
 
         groupsArr[groupIndex].groupTasks[taskIndex].updateTitle(currTask.querySelector('.task-name').value);
         groupsArr[groupIndex].groupTasks[taskIndex].updateDue(currTask.querySelector('.task-due').value);
@@ -195,11 +178,35 @@ function editTask(editBtn) {
         }
 
         currTask.querySelector('.edit').src = checkMark;
-        currTask.querySelector('.task-due').disabled = false;
-        currTask.querySelector('.task-name').disabled = false;
-        currTask.querySelector('.display-note').disabled = false;
-        currTask.querySelector('.taskPriority').disabled = false;
+        disableInputs(currTask, false);
     }
+}
+
+function disableInputs(currTask, flag) {
+    currTask.querySelector('.task-due').disabled = flag;
+    currTask.querySelector('.task-name').disabled = flag;
+    currTask.querySelector('.display-note').disabled = flag;
+    currTask.querySelector('.taskPriority').disabled = flag;
+}
+
+function deleteIcon(classCategory) {
+    let dlt = document.createElement('input');
+    dlt.src = './icons/delete-outline.svg';
+    dlt.className = classCategory;
+    dlt.type = 'image';
+
+    dlt.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        if (dlt.className === 'delete-group') {
+            let currGroup = dlt.parentNode;
+            let groupIndex = currGroup.dataset.index;
+    
+            groupsArr.splice(groupIndex, 1);
+            dlt.parentNode.remove();
+        } else deleteTask(dlt);
+    });
+    return dlt;
 }
 
 function deleteTask(deleteBtn) {
