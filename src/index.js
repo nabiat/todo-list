@@ -1,14 +1,13 @@
 import './style.css';
 import { Group } from './modules/group';
-import { groupsArr, display, displayGroup } from "./modules/group-display-logic";
+import { groupsArr, displayGroupAndPage } from "./modules/group-display-logic";
 
-// autoselect default group on page load
-// select one group at a time
+// select one group + display page one at a time
 // only accept valid date input
 // clean/factor out code
 // fix styling
 
-display(0);
+displayGroupAndPage(0, groupsArr[0].groupTitle);
 
 let groupEntry = document.querySelector('.add-group');
 groupEntry.addEventListener('click', () => {
@@ -22,9 +21,11 @@ addGroupEntry.addEventListener('click', (e) => {
 
     let title = document.getElementById('title').value;
     groupsArr.push(new Group(title));
-    displayGroup(groupsArr.length - 1, title);
+
+    displayGroupAndPage(groupsArr.length - 1, title);
 
     document.querySelector('.group-dialog').close();
+
 });
 
 let cancelGroupEntry = document.querySelector('.group-dialog .cancel');

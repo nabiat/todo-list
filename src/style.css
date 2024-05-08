@@ -117,6 +117,7 @@ body {
 }
 
 input:disabled, textarea:disabled, select:disabled {
+    border: none;
     color: black;
     background-color: transparent;
 }

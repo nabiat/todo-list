@@ -14,9 +14,10 @@ defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'Mid', false));
 
 groupsArr.push(defaultG);
 
-function display(groupIndex) {
-    displayGroup(groupIndex, groupsArr[groupIndex].groupTitle);
+function displayGroupAndPage(groupIndex, title) {
+    let btn = displayGroup(groupIndex, title);
     displayTaskPage(groupIndex);
+    return btn;
 }
 
 function displayGroup(groupIndex, groupTitle) {
@@ -42,8 +43,8 @@ function displayGroup(groupIndex, groupTitle) {
 function displayTaskPage(groupIndex) {
     let group = groupsArr[groupIndex];
 
-    let rightPage = document.createElement('div');
-    rightPage.className = 'right';
+    let rightPage = document.querySelector('.right');
+    rightPage.innerHTML = '';
     rightPage.id = 'gindex-' + groupIndex;
 
     // Header
@@ -76,8 +77,6 @@ function displayTaskPage(groupIndex) {
     }
 
     rightPage.append(header, tasksDiv, addTaskDiv);
-
-    document.querySelector('.main').append(rightPage);
 }
 
-export { groupsArr, display, displayGroup };
+export { groupsArr, displayGroupAndPage };

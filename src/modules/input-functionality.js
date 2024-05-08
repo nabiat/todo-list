@@ -80,28 +80,13 @@ function priority(task, taskPriority) {
 
     if (taskPriority === 'Low') {
         low.selected = true;
-        // task.style.border = '2px solid green';
     } else if (taskPriority === 'Mid') {
         mid.selected = true;
-        // task.style.border = '2px solid yellow';
     } else {
         high.selected = true;
-        // task.style.border = '2px solid red';
     }
 
     priority.append(low, mid, high);
-
-    priority.addEventListener('change', () => {
-        let form = priority.parentNode.parentNode.parentNode;
-        let selected = priority.options[priority.selectedIndex].value;
-        // if (selected === 'low') {
-        //     form.style.border = '2px solid green';
-        // } else if (selected === 'mid') {
-        //     form.style.border = '2px solid yellow';
-        // } else {
-        //     form.style.border = '2px solid red';
-        // }
-    });
 
     return priority;
 }
@@ -199,17 +184,46 @@ function deleteIcon(classCategory) {
         e.preventDefault();
 
         if (dlt.className === 'delete-group') {
-            let currGroup = dlt.parentNode;
-            let groupIndex = currGroup.dataset.index;
-    
-            groupsArr.splice(groupIndex, 1);
-            dlt.parentNode.remove();
-        } else deleteTask(dlt);
+            let rightPage = document.querySelector('.right');
+            updateDeleteGroups(dlt, rightPage);
+
+            // TODO: if the displayed page is the groupIndex remove page
+
+        } else {
+            updateDeleteTasks(dlt);
+        }
     });
     return dlt;
 }
 
-function deleteTask(deleteBtn) {
+function updateDeleteGroups(deleteBtn, rightPage) {
+    let group = deleteBtn.parentNode;
+    let groupIndex = group.dataset.index;
+
+    if (rightPage.id === `gindex-${groupIndex}`) {
+        rightPage.innerHTML = '';
+    }
+
+    while (group.nextSibling) {
+        let siblingGroup = group.nextSibling;
+        let oldIndex = siblingGroup.dataset.index;
+        let newIndex = oldIndex - 1;
+
+        if (rightPage.id === `gindex-${oldIndex}`) {
+            rightPage.id = 'gindex-' + newIndex;
+        }
+
+        siblingGroup.id = 'gindex-' + newIndex;
+        siblingGroup.dataset.index = newIndex;
+
+        group = siblingGroup;
+    }
+    
+    groupsArr.splice(groupIndex, 1);
+    deleteBtn.parentNode.remove();
+}
+
+function updateDeleteTasks(deleteBtn) {
     let currTask = deleteBtn.parentNode.parentNode.parentNode;
     let currTaskIndex = currTask.dataset.tIndex;
     let currGroupIndex = currTask.dataset.gIndex;
@@ -225,7 +239,7 @@ function deleteTask(deleteBtn) {
     }
 
     groupsArr[currGroupIndex].groupTasks.splice(currTaskIndex, 1);
-    document.getElementById(`tindex-${currTaskIndex}`).remove();
+    deleteBtn.parentNode.parentNode.parentNode.remove();
 }
 
 export { title, dueDate, editIcon, priority, noteIcon, deleteIcon };
