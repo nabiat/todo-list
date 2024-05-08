@@ -61,7 +61,7 @@ function noteIcon() {
     return note;
 }
 
-function priority(task, taskPriority) {
+function priority(taskPriority) {
     let priority = document.createElement('select');
     priority.className = 'taskPriority';
     priority.disabled = true;

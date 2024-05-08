@@ -19,7 +19,7 @@ function createTask(task, groupIndex, taskIndex) {
     let checkBox = document.createElement('input');
     checkBox.type = 'checkbox';
 
-    leftSide.append(checkBox, title(task.taskTitle), noteIcon(), priority(newTask, task.taskPriority));
+    leftSide.append(checkBox, title(task.taskTitle), noteIcon(), priority(task.taskPriority));
 
     let rightSide = document.createElement('div');
     rightSide.className = 'right-info';
