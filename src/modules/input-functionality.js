@@ -1,5 +1,4 @@
-import '../style.css';
-import { groupsArr } from './group-display-logic';
+import { groupsArr } from '../index';
 import upArrow from '../icons/arrow-up.svg';
 import checkMark from '../icons/check-outline.svg';
 
@@ -78,9 +77,9 @@ function priority(taskPriority) {
     high.textContent = 'High';
     high.value = 'high';
 
-    if (taskPriority === 'Low') {
+    if (taskPriority === 'low') {
         low.selected = true;
-    } else if (taskPriority === 'Mid') {
+    } else if (taskPriority === 'mid') {
         mid.selected = true;
     } else {
         high.selected = true;
@@ -186,9 +185,6 @@ function deleteIcon(classCategory) {
         if (dlt.className === 'delete-group') {
             let rightPage = document.querySelector('.right');
             updateDeleteGroups(dlt, rightPage);
-
-            // TODO: if the displayed page is the groupIndex remove page
-
         } else {
             updateDeleteTasks(dlt);
         }

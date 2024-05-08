@@ -1,24 +1,7 @@
-import '../style.css';
-import { ToDo } from "./todo";
-import { Group } from "./group";
-import { editIcon, deleteIcon } from './input-functionality';
-import { createTask, addTaskBtn } from './task-display-logic';
-
-const groupsArr = [];
-
-let defaultG = new Group('Home');
-defaultG.addTask(new ToDo('Vacuum', 'hi', '2024-04-13', 'High', false));
-defaultG.addTask(new ToDo('Laundry', '', '2024-04-13', 'Low', false));
-defaultG.addTask(new ToDo('Organize', '', '2024-04-13', 'High', false));
-defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'Mid', false));
-
-groupsArr.push(defaultG);
-
-function displayGroupAndPage(groupIndex, title) {
-    let btn = displayGroup(groupIndex, title);
-    displayTaskPage(groupIndex);
-    return btn;
-}
+import { Group } from './group';
+import { groupsArr } from '../index';
+import { deleteIcon } from './input-functionality';
+import { displayTaskPage } from './task-display-logic';
 
 function displayGroup(groupIndex, groupTitle) {
     let groups = document.querySelector('.groups');
@@ -36,47 +19,30 @@ function displayGroup(groupIndex, groupTitle) {
     
     groupBtn.append(groupName, deleteIcon('delete-group'));
     groups.append(groupBtn);
-
-    return groupBtn;
 }
 
-function displayTaskPage(groupIndex) {
-    let group = groupsArr[groupIndex];
+let addGroup = document.querySelector('.add-group');
+addGroup.addEventListener('click', () => {
+    document.querySelector('.group-dialog form').reset();
+    document.querySelector('.group-dialog').showModal();
+});
 
-    let rightPage = document.querySelector('.right');
-    rightPage.innerHTML = '';
-    rightPage.id = 'gindex-' + groupIndex;
+let addGroupEntry = document.querySelector('.group-dialog .add');
+addGroupEntry.addEventListener('click', (e) => {
+    e.preventDefault();
 
-    // Header
-    let header = document.createElement('div');
-    header.dataset.gIndex = groupIndex;
-    header.className = 'right-header';
+    let title = document.getElementById('title').value;
+    groupsArr.push(new Group(title));
 
-    let title = document.createElement('input');
-    title.value = group.groupTitle;
-    title.className = 'group-name';
-    title.disabled = true;
-    title.type = 'text';
+    displayGroup(groupsArr.length - 1, title);
+    displayTaskPage(groupsArr.length - 1);
 
-    let edit = editIcon(groupIndex, 'edit-title');
+    document.querySelector('.group-dialog').close();
+});
 
-    header.append(title, edit);
+let cancelGroupEntry = document.querySelector('.group-dialog .cancel');
+cancelGroupEntry.addEventListener('click', () => {
+    document.querySelector('.group-dialog').close();
+});
 
-    // Tasks
-    let tasksDiv = document.createElement('div');
-    tasksDiv.className = 'tasks';
-
-    let addTaskDiv = document.createElement('div');
-    addTaskDiv.className = 'add-task-div';
-
-    addTaskDiv.append(addTaskBtn(groupIndex));
-
-    for (let i = 0; i < group.groupTasks.length; i++) {
-        let task = group.groupTasks[i];
-        tasksDiv.append(createTask(task, groupIndex, i));
-    }
-
-    rightPage.append(header, tasksDiv, addTaskDiv);
-}
-
-export { groupsArr, displayGroupAndPage };
+export { displayGroup };

@@ -1,6 +1,5 @@
-import '../style.css';
 import { ToDo } from './todo';
-import { groupsArr } from './group-display-logic';
+import { groupsArr } from '../index';
 import { title, dueDate, noteIcon, editIcon, priority, deleteIcon } from './input-functionality';
 
 function createTask(task, groupIndex, taskIndex) {
@@ -51,6 +50,45 @@ function createTask(task, groupIndex, taskIndex) {
     return newTask;
 }
 
+function displayTaskPage(groupIndex) {
+    let group = groupsArr[groupIndex];
+
+    let rightPage = document.querySelector('.right');
+    rightPage.innerHTML = '';
+    rightPage.id = 'gindex-' + groupIndex;
+
+    // Header
+    let header = document.createElement('div');
+    header.dataset.gIndex = groupIndex;
+    header.className = 'right-header';
+
+    let title = document.createElement('input');
+    title.value = group.groupTitle;
+    title.className = 'group-name';
+    title.disabled = true;
+    title.type = 'text';
+
+    let edit = editIcon(groupIndex, 'edit-title');
+
+    header.append(title, edit);
+
+    // Tasks
+    let tasksDiv = document.createElement('div');
+    tasksDiv.className = 'tasks';
+
+    let addTaskDiv = document.createElement('div');
+    addTaskDiv.className = 'add-task-div';
+
+    addTaskDiv.append(addTaskBtn(groupIndex));
+
+    for (let i = 0; i < group.groupTasks.length; i++) {
+        let task = group.groupTasks[i];
+        tasksDiv.append(createTask(task, groupIndex, i));
+    }
+
+    rightPage.append(header, tasksDiv, addTaskDiv);
+}
+
 function addTaskBtn(groupIndex) {
     let taskBtn = document.createElement('button');
     taskBtn.dataset.gIndex = groupIndex;
@@ -93,4 +131,4 @@ cancelTaskEntry.addEventListener('click', () => {
     taskDialog.close();
 });
 
-export { createTask, addTaskBtn }; 
+export { displayTaskPage }; 

@@ -1,33 +1,20 @@
 import './style.css';
+import { ToDo } from './modules/todo';
 import { Group } from './modules/group';
-import { groupsArr, displayGroupAndPage } from "./modules/group-display-logic";
+import { displayGroup } from './modules/group-display-logic';
+import { displayTaskPage } from './modules/task-display-logic';
 
-// select one group + display page one at a time
-// clean/factor out code
-// fix styling
+const groupsArr = [];
 
-displayGroupAndPage(0, groupsArr[0].groupTitle);
+let defaultG = new Group('Home');
+defaultG.addTask(new ToDo('Vacuum', 'hi', '2024-04-13', 'High', false));
+defaultG.addTask(new ToDo('Laundry', '', '2024-04-13', 'Low', false));
+defaultG.addTask(new ToDo('Organize', '', '2024-04-13', 'High', false));
+defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'Mid', false));
 
-let groupEntry = document.querySelector('.add-group');
-groupEntry.addEventListener('click', () => {
-    document.querySelector('.group-dialog form').reset();
-    document.querySelector('.group-dialog').showModal();
-});
+groupsArr.push(defaultG);
 
-let addGroupEntry = document.querySelector('.group-dialog .add');
-addGroupEntry.addEventListener('click', (e) => {
-    e.preventDefault();
+displayGroup(0, groupsArr[0].groupTitle);
+displayTaskPage(0);
 
-    let title = document.getElementById('title').value;
-    groupsArr.push(new Group(title));
-
-    displayGroupAndPage(groupsArr.length - 1, title);
-
-    document.querySelector('.group-dialog').close();
-
-});
-
-let cancelGroupEntry = document.querySelector('.group-dialog .cancel');
-cancelGroupEntry.addEventListener('click', () => {
-    document.querySelector('.group-dialog').close();
-});
+export { groupsArr };
