@@ -3,7 +3,6 @@ import { Group } from './modules/group';
 import { groupsArr, displayGroupAndPage } from "./modules/group-display-logic";
 
 // select one group + display page one at a time
-// only accept valid date input
 // clean/factor out code
 // fix styling
 

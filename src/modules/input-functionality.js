@@ -17,7 +17,7 @@ function dueDate(dueDate) {
     due.className = 'task-due';
     due.value = dueDate;
     due.disabled = true;
-    due.type = 'text';
+    due.type = 'date';
     return due;
 }
 
