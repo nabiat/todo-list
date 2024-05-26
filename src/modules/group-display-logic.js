@@ -1,7 +1,6 @@
 import { Group } from './group';
 import { groupsArr } from '../index';
 import { deleteIcon } from './input-functionality';
-import { displayTaskPage } from './task-display-logic';
 
 function displayGroup(groupIndex, groupTitle) {
     let groups = document.querySelector('.groups');
@@ -35,7 +34,6 @@ addGroupEntry.addEventListener('click', (e) => {
     groupsArr.push(new Group(title));
 
     displayGroup(groupsArr.length - 1, title);
-    displayTaskPage(groupsArr.length - 1);
 
     document.querySelector('.group-dialog').close();
 });

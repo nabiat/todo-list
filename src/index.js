@@ -17,4 +17,20 @@ groupsArr.push(defaultG);
 displayGroup(0, groupsArr[0].groupTitle);
 displayTaskPage(0);
 
+// Display the selected groups tasks + highlight selected group
+document.body.addEventListener('click', (e) => {
+    if (e.currentTarget !== e.target) {
+        if (e.target.classList.contains('group')) {
+            let idx = e.target.dataset.index;
+            displayTaskPage(idx);
+
+            for (let child of e.target.parentNode.children) {
+                child.style.backgroundColor = 'transparent';
+            }
+
+            e.target.style.backgroundColor = 'grey';
+        }
+    }
+});
+
 export { groupsArr };
