@@ -42,6 +42,10 @@ class ToDo {
     get taskPriority() {
         return this.priority;
     }
+
+    get taskStatus() {
+        return this.status;
+    }
 }
 
 export { ToDo };
