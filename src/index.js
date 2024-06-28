@@ -6,6 +6,7 @@ import checkMark from './icons/check-outline.svg';
 import downArrow from './icons/arrow-down.svg';
 import deleteOutline from './icons/delete-outline.svg';
 import editOutline from './icons/pencil-outline.svg';
+// TODO: edit ls when tasks are added and when groups/tasks are deleted/edited
 
 function LogicController() {
     const data = [];
@@ -22,8 +23,8 @@ function LogicController() {
     
     const addGroup = (title) => data.push(new Group(title));
 
-    const addTask = (groupIndex, name, notes, due, priority) => {
-        const newTask = new ToDo(name, notes, due, priority, false);
+    const addTask = (groupIndex, name, notes, due, priority, status) => {
+        const newTask = new ToDo(name, notes, due, priority, status);
         getGroup(groupIndex).addTask(newTask);
         return newTask;
     };
@@ -88,9 +89,27 @@ function ScreenController() {
     const cancelTaskDialog = document.querySelector('.task-dialog .cancel');
 
     const load = () => {
-        updateGroup(0, information.getGroupTitle(0));
+        if (localStorage.getItem('groups')) {
+            const groups = JSON.parse(localStorage.getItem('groups'));
+            for (let i = 0; i < groups.length; i++) {
+                if (i > information.getData.length) information.addGroup(groups[i].title);
+                updateGroup(i, information.getGroupTitle(i));
+                
+                const tasks = groups[i].tasks;
+                for (let j = 0; j < tasks.length; j++) {
+                    const task = tasks[j];
+
+                    information.addTask(i, task.title, task.note, task.due, 
+                        task.priority, task.status);
+                }
+            }
+        } else {
+            localStorage.setItem('groups', JSON.stringify(information.getData()));
+            updateGroup(0, information.getGroupTitle(0));
+        }
         updateTasks(0);
         document.querySelector('.groups').childNodes[0].style.backgroundColor = 'grey';
+        
     }
 
     const updateGroup = (groupIndex, title) => {
@@ -393,7 +412,7 @@ function ScreenController() {
         dlt.className = classCategory;
         dlt.type = 'image';
     
-        dlt.addEventListener('click', (e) => {
+        dlt.addEventListener('click', (e) => { // add to storage
             e.preventDefault();
     
             if (dlt.className === 'delete-group') {
@@ -489,6 +508,11 @@ function ScreenController() {
         information.addGroup(title);
         updateGroup(data.length - 1, title);
 
+        // TODO: add to storage
+        const newInfo = JSON.parse(localStorage.getItem('groups'));
+        newInfo.push(data[data.length - 1]);
+        localStorage.setItem('groups', JSON.stringify(newInfo));
+
         document.querySelector('.group-dialog').close();
     });
 
@@ -516,7 +540,7 @@ function ScreenController() {
         taskDialog.close();
     });
 
-    addTask.addEventListener('click', (e) => {
+    addTask.addEventListener('click', (e) => { // add to storage
         e.preventDefault();
 
         const groupIndex = addTask.dataset.gIndex;
