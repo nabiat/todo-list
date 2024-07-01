@@ -6,7 +6,6 @@ import checkMark from './icons/check-outline.svg';
 import downArrow from './icons/arrow-down.svg';
 import deleteOutline from './icons/delete-outline.svg';
 import editOutline from './icons/pencil-outline.svg';
-// TODO: edit ls when tasks are added and when groups/tasks are deleted/edited
 
 function LogicController() {
     const data = [];
@@ -89,12 +88,16 @@ function ScreenController() {
     const cancelTaskDialog = document.querySelector('.task-dialog .cancel');
 
     const load = () => {
-        if (localStorage.getItem('groups')) {
+        if (!localStorage.getItem('groups')) {
+            updateGroup(0, information.getGroupTitle(0));
+            localStorage.setItem('groups', JSON.stringify(information.getData()));
+        } else {
             const groups = JSON.parse(localStorage.getItem('groups'));
             for (let i = 0; i < groups.length; i++) {
                 if (i > information.getData.length) information.addGroup(groups[i].title);
                 updateGroup(i, information.getGroupTitle(i));
                 
+                if (i == 0) continue;
                 const tasks = groups[i].tasks;
                 for (let j = 0; j < tasks.length; j++) {
                     const task = tasks[j];
@@ -103,13 +106,9 @@ function ScreenController() {
                         task.priority, task.status);
                 }
             }
-        } else {
-            localStorage.setItem('groups', JSON.stringify(information.getData()));
-            updateGroup(0, information.getGroupTitle(0));
         }
         updateTasks(0);
         document.querySelector('.groups').childNodes[0].style.backgroundColor = 'grey';
-        
     }
 
     const updateGroup = (groupIndex, title) => {
@@ -354,6 +353,8 @@ function ScreenController() {
             
             let group = document.getElementById(`gindex-${groupIndex}`);
             group.querySelector('.group-name').textContent = newTitle;
+
+            localStorage.setItem('groups', JSON.stringify(information.getData()));
         } else {
             pageHeader.querySelector('.group-name').disabled = false;
             pageHeader.querySelector('.edit-title').src = checkMark;
@@ -381,6 +382,8 @@ function ScreenController() {
             if (currTask.querySelector('.note').src !== upArrow) {
                 currTask.querySelector('.display-note').remove();
             }
+
+            localStorage.setItem('groups', JSON.stringify(information.getData()));
         } else {
             let groupIndex = currTask.dataset.gIndex;
             let taskIndex = currTask.dataset.tIndex;
@@ -412,7 +415,7 @@ function ScreenController() {
         dlt.className = classCategory;
         dlt.type = 'image';
     
-        dlt.addEventListener('click', (e) => { // add to storage
+        dlt.addEventListener('click', (e) => {
             e.preventDefault();
     
             if (dlt.className === 'delete-group') {
@@ -429,7 +432,7 @@ function ScreenController() {
     function updateDeleteGroups(deleteBtn, rightPage) {
         let group = deleteBtn.parentNode;
         let groupIndex = group.dataset.index;
-    
+
         if (rightPage.id === `gindex-${groupIndex}`) {
             rightPage.innerHTML = '';
         }
@@ -451,6 +454,8 @@ function ScreenController() {
         
         information.removeGroup(groupIndex);
 
+        localStorage.setItem('groups', JSON.stringify(information.getData()));
+
         deleteBtn.parentNode.remove();
     }
     
@@ -470,6 +475,9 @@ function ScreenController() {
         }
     
         information.removeTask(currGroupIndex, currTaskIndex);
+
+        localStorage.setItem('groups', JSON.stringify(information.getData()));
+
         deleteBtn.parentNode.parentNode.parentNode.remove();
     }
 
@@ -478,7 +486,7 @@ function ScreenController() {
         if (e.currentTarget !== e.target) {
             if (e.target.classList.contains('group')) {
                 let idx = e.target.dataset.index;
-                updateTasks(idx);
+                updateTasks(idx); 
     
                 for (let child of e.target.parentNode.children) {
                     child.style.backgroundColor = 'transparent';
@@ -508,7 +516,6 @@ function ScreenController() {
         information.addGroup(title);
         updateGroup(data.length - 1, title);
 
-        // TODO: add to storage
         const newInfo = JSON.parse(localStorage.getItem('groups'));
         newInfo.push(data[data.length - 1]);
         localStorage.setItem('groups', JSON.stringify(newInfo));
@@ -540,7 +547,7 @@ function ScreenController() {
         taskDialog.close();
     });
 
-    addTask.addEventListener('click', (e) => { // add to storage
+    addTask.addEventListener('click', (e) => {
         e.preventDefault();
 
         const groupIndex = addTask.dataset.gIndex;
@@ -552,6 +559,8 @@ function ScreenController() {
         const taskIndex = information.getTasks(groupIndex).length - 1;
 
         document.querySelector('.tasks').append(createTask(newTask, groupIndex, taskIndex));
+
+        localStorage.setItem('groups', JSON.stringify(information.getData()));
 
         document.querySelector('.task-dialog').close();
     });
