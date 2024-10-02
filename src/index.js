@@ -10,14 +10,6 @@ import editOutline from './icons/pencil-outline.svg';
 function LogicController() {
     const data = [];
 
-    let defaultG = new Group('Home');
-    defaultG.addTask(new ToDo('Vacuum', 'hi', '2024-04-13', 'High', false));
-    defaultG.addTask(new ToDo('Laundry', '', '2024-04-13', 'Low', false));
-    defaultG.addTask(new ToDo('Organize', '', '2024-04-13', 'High', false));
-    defaultG.addTask(new ToDo('Clean bathrooms', '', '2024-04-13', 'Mid', false));
-
-    data.push(defaultG);
-
     const getData = () => data;
     
     const addGroup = (title) => data.push(new Group(title));
@@ -89,15 +81,24 @@ function ScreenController() {
 
     const load = () => {
         if (!localStorage.getItem('groups')) {
+            // Default group + tasks
+            information.addGroup("Home");
+            information.addTask(0, 'Vacuum', '', '2024-04-13', 'High', false);
+            information.addTask(0, 'Laundry', '', '2024-04-13', 'Low', false);
+            information.addTask(0, 'Organize', '', '2024-04-13', 'High', false);
+            information.addTask(0, 'Clean bathrooms', '', '2024-04-13', 'Mid', false);
+
             updateGroup(0, information.getGroupTitle(0));
             localStorage.setItem('groups', JSON.stringify(information.getData()));
+
+            updateTasks(0);
+            document.querySelector('.groups').childNodes[0].style.backgroundColor = 'grey';
         } else {
             const groups = JSON.parse(localStorage.getItem('groups'));
             for (let i = 0; i < groups.length; i++) {
-                if (i > information.getData.length) information.addGroup(groups[i].title);
-                updateGroup(i, information.getGroupTitle(i));
+                updateGroup(i, groups[i].title);
+                information.addGroup(groups[i].title);
                 
-                if (i == 0) continue;
                 const tasks = groups[i].tasks;
                 for (let j = 0; j < tasks.length; j++) {
                     const task = tasks[j];
@@ -106,9 +107,12 @@ function ScreenController() {
                         task.priority, task.status);
                 }
             }
+
+            if (groups.length > 0) {
+                updateTasks(0);
+                document.querySelector('.groups').childNodes[0].style.backgroundColor = 'grey';
+            }
         }
-        updateTasks(0);
-        document.querySelector('.groups').childNodes[0].style.backgroundColor = 'grey';
     }
 
     const updateGroup = (groupIndex, title) => {
@@ -315,7 +319,7 @@ function ScreenController() {
                 information.changeStatus(groupIdx, taskIdx, false);
                 currTask.style.backgroundColor = 'transparent';
             }
-    
+            localStorage.setItem('groups', JSON.stringify(information.getData()));
         });
     
         return checkMark;
@@ -451,7 +455,7 @@ function ScreenController() {
     
             group = siblingGroup;
         }
-        
+
         information.removeGroup(groupIndex);
 
         localStorage.setItem('groups', JSON.stringify(information.getData()));
