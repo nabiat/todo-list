@@ -514,17 +514,29 @@ function ScreenController() {
     addGroup.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const data = information.getData();
-        const title = document.getElementById('title').value;
+        const titleInput = document.getElementById('title');
+        const errorMsg = document.querySelector('.group-error');
 
-        information.addGroup(title);
-        updateGroup(data.length - 1, title);
+        errorMsg.innerHTML = '';
 
-        const newInfo = JSON.parse(localStorage.getItem('groups'));
-        newInfo.push(data[data.length - 1]);
-        localStorage.setItem('groups', JSON.stringify(newInfo));
+        if (titleInput.checkValidity()) {
+            const data = information.getData();
+            const title = document.getElementById('title').value;
 
-        document.querySelector('.group-dialog').close();
+            information.addGroup(title);
+            updateGroup(data.length - 1, title);
+
+            const newInfo = JSON.parse(localStorage.getItem('groups'));
+            newInfo.push(data[data.length - 1]);
+            localStorage.setItem('groups', JSON.stringify(newInfo));
+
+            document.querySelector('.group-dialog').close();
+        } else {
+            errorMsg.innerHTML = 'Please enter a title';
+            errorMsg.style.textAlign = 'center';
+            errorMsg.style.fontSize = '10px';
+            errorMsg.style.color = 'red';
+        }
     });
 
     // Listeners for Tasks
@@ -554,19 +566,33 @@ function ScreenController() {
     addTask.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const groupIndex = addTask.dataset.gIndex;
-        const name = document.getElementById('name').value;
-        const due = document.getElementById('due').value;
-        const note = document.getElementById('note').value;
-        const priority = document.getElementById('priority').value;
-        const newTask = information.addTask(groupIndex, name, note, due, priority);
-        const taskIndex = information.getTasks(groupIndex).length - 1;
+        const name = document.getElementById('name');
+        const due = document.getElementById('due');
+        const note = document.getElementById('note');
+        const priority = document.getElementById('priority');
+        const errorMsg = document.querySelector('.task-error');
+        const validForm = name.checkValidity() && due.checkValidity() && 
+            note.checkValidity() && priority.checkValidity();
 
-        document.querySelector('.tasks').append(createTask(newTask, groupIndex, taskIndex));
+        errorMsg.innerHTML = '';
 
-        localStorage.setItem('groups', JSON.stringify(information.getData()));
+        if (validForm) {
+            const groupIndex = addTask.dataset.gIndex;
+            const newTask = information.addTask(groupIndex, name.value, note.value, due.value, priority.value);
+            const taskIndex = information.getTasks(groupIndex).length - 1;
 
-        document.querySelector('.task-dialog').close();
+            document.querySelector('.tasks').append(createTask(newTask, groupIndex, taskIndex));
+
+            localStorage.setItem('groups', JSON.stringify(information.getData()));
+
+            document.querySelector('.task-dialog').close();
+        } else {
+            errorMsg.innerHTML = 'Enter info. for required fields';
+            errorMsg.style.fontSize = '10px';
+            errorMsg.style.textAlign = 'center';
+            errorMsg.style.color = 'red';
+        }
+        
     });
 
     load();

@@ -121,3 +121,7 @@ input:disabled, textarea:disabled, select:disabled {
     color: black;
     background-color: transparent;
 }
+
+input:invalid {
+    background-color: #fdd;
+}

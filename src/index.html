@@ -9,9 +9,11 @@
             <form>
                 <label for="title">Title: </label>
                 <input type="text" name="title" id="title" required>
-                <button class="add">Add</button>
-                <button class="cancel">Cancel</button>
+                <button type="submit" class="add">Add</button>
+                <button type="button" class="cancel">Cancel</button>
             </form>
+
+            <div class="group-error"></div>
         </dialog>
 
         <dialog class="task-dialog">
@@ -33,11 +35,12 @@
                 <label for="note">Notes: </label>
                 <input type="text" name="note" id="note">
 
-                <button class="add">Add</button>
-                <button class="cancel">Cancel</button>
+                <button type="submit" class="add">Add</button>
+                <button type="button" class="cancel">Cancel</button>
             </form>
-        </dialog>
 
+            <div class="task-error"></div>
+        </dialog>
 
         <div class="container">
             <div class="header">
